@@ -1,0 +1,13 @@
+[
+  {
+    "name": "Theme settings",
+    "settings": [
+      {
+        "type": "text",
+        "id": "welcome_text",
+        "label": "Welcome text",
+        "default": "Welcome to our store"
+      }
+    ]
+  }
+]
