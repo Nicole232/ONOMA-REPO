@@ -1,1 +1,124 @@
-<footer><p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</p></footer>
+<footer class="footer" data-section-id="{{ section.id }}" data-section-type="footer">
+  <div class="page-width">
+    <div class="footer-content">
+      <div class="footer-block footer-newsletter">
+        <h3>{{ section.settings.newsletter_heading | default: "Stay Updated" }}</h3>
+        <p>{{ section.settings.newsletter_text | default: "Subscribe to get updates on new products and offers." }}</p>
+        
+        {% form 'customer', class: 'footer-newsletter-form' %}
+          <div class="newsletter-form-field">
+            <input 
+              type="email" 
+              name="contact[email]" 
+              placeholder="Enter your email"
+              aria-label="Email address"
+              required
+            >
+            <button type="submit" class="btn btn-primary">
+              Subscribe
+            </button>
+          </div>
+        {% endform %}
+      </div>
+      
+      <div class="footer-block footer-links">
+        <h3>Quick Links</h3>
+        <ul class="footer-menu">
+          {% for link in section.settings.footer_menu.links %}
+            <li>
+              <a href="{{ link.url }}">{{ link.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+      
+      <div class="footer-block footer-contact">
+        <h3>Contact Info</h3>
+        {% if section.settings.contact_email != blank %}
+          <p>Email: <a href="mailto:{{ section.settings.contact_email }}">{{ section.settings.contact_email }}</a></p>
+        {% endif %}
+        {% if section.settings.contact_phone != blank %}
+          <p>Phone: <a href="tel:{{ section.settings.contact_phone }}">{{ section.settings.contact_phone }}</a></p>
+        {% endif %}
+      </div>
+      
+      <div class="footer-block footer-social">
+        <h3>Follow Us</h3>
+        <div class="social-links">
+          {% if settings.social_instagram_link != blank %}
+            <a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener" aria-label="Instagram">
+              {% render 'icon-instagram' %}
+            </a>
+          {% endif %}
+          {% if settings.social_facebook_link != blank %}
+            <a href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener" aria-label="Facebook">
+              {% render 'icon-facebook' %}
+            </a>
+          {% endif %}
+          {% if settings.social_twitter_link != blank %}
+            <a href="{{ settings.social_twitter_link }}" target="_blank" rel="noopener" aria-label="Twitter">
+              {% render 'icon-twitter' %}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p>
+      <div class="footer-payment-icons">
+        {% for type in shop.enabled_payment_types %}
+          {{ type | payment_type_img_tag }}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter heading",
+      "default": "Stay Updated"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Newsletter text",
+      "default": "Subscribe to get updates on new products and offers."
+    },
+    {
+      "type": "header",
+      "content": "Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "footer_menu",
+      "label": "Footer menu",
+      "default": "footer"
+    },
+    {
+      "type": "header",
+      "content": "Contact"
+    },
+    {
+      "type": "text",
+      "id": "contact_email",
+      "label": "Contact email"
+    },
+    {
+      "type": "text",
+      "id": "contact_phone",
+      "label": "Contact phone"
+    }
+  ]
+}
+{% endschema %}
