@@ -1,1 +1,63 @@
-<header><h1>{{ shop.name }}</h1></header>
+<header class="header" data-section-id="{{ section.id }}" data-section-type="header">
+  <div class="page-width">
+    <div class="header-content">
+      <div class="header-logo">
+        {% if section.settings.logo != blank %}
+          <a href="{{ routes.root_url }}" class="header-logo-link">
+            {{ section.settings.logo | image_url: width: 200 | image_tag: alt: shop.name, class: 'header-logo-image' }}
+          </a>
+        {% else %}
+          <a href="{{ routes.root_url }}" class="header-logo-text">
+            {{ shop.name }}
+          </a>
+        {% endif %}
+      </div>
+      
+      <nav class="header-nav" role="navigation">
+        {% for link in section.settings.menu.links %}
+          <a href="{{ link.url }}" class="header-nav-link">
+            {{ link.title }}
+          </a>
+        {% endfor %}
+      </nav>
+      
+      <div class="header-actions">
+        {% if shop.customer_accounts_enabled %}
+          <a href="{{ routes.account_url }}" class="header-account-link">
+            {% render 'icon-account' %}
+            Account
+          </a>
+        {% endif %}
+        
+        <a href="{{ routes.search_url }}" class="header-search-link">
+          {% render 'icon-search' %}
+          Search
+        </a>
+        
+        <a href="{{ routes.cart_url }}" class="header-cart-link" data-cart-count="{{ cart.item_count }}">
+          {% render 'icon-cart' %}
+          Cart ({{ cart.item_count }})
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu",
+      "default": "main-menu"
+    }
+  ]
+}
+
